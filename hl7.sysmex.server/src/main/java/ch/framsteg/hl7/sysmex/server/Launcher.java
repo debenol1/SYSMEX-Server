@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2020-2022,  Olivier Debenath
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Olivier Debenath <olivier@debenath.ch> - initial implementation
+ *    
+ *******************************************************************************/
 package ch.framsteg.hl7.sysmex.server;
 
 import java.util.Properties;
@@ -9,6 +20,10 @@ import ch.framsteg.hl7.sysmex.server.properties.PropertiesValidator;
 import ch.framsteg.hl7.sysmex.server.server.CommonSocketServer;
 
 public class Launcher {
+
+	private final static String ERR_PROPERTIES_INVALID = "Properties invalid";
+	private final static String ERR_PARAMETERS_MISSING = "Missing parameter";
+
 	public static void main(String[] args) {
 		try {
 			if (args.length > 0) {
@@ -17,15 +32,16 @@ public class Launcher {
 
 				Validator<Properties> validator = new PropertiesValidator();
 				if (validator.validate(properties)) {
-					CommonSocketServer commonSocketServer = new CommonSocketServer(Integer.parseInt(properties.getProperty("port")), properties);
-
+					CommonSocketServer commonSocketServer = new CommonSocketServer(
+							Integer.parseInt(properties.getProperty("port")), properties);
+					commonSocketServer.run();
 				} else {
 					// Properties invalid
-					System.out.println("Properties invalid");
+					System.out.println(ERR_PROPERTIES_INVALID);
 				}
 			} else {
 				// Parameter not entered
-				System.out.println("Missing parameter");
+				System.out.println(ERR_PARAMETERS_MISSING);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

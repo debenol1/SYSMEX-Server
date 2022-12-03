@@ -1,8 +1,89 @@
+/*******************************************************************************
+ * Copyright (c) 2020-2022,  Olivier Debenath
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Olivier Debenath <olivier@debenath.ch> - initial implementation
+ *    
+ *******************************************************************************/
 package ch.framsteg.hl7.sysmex.server.messages;
 
 import org.apache.log4j.Logger;
 
 public class XPMessage {
+
+	private final static String DASH = "--";
+	private final static String TITLE = "Generate XPMessage";
+	
+	private final static String LOG_EXTRACTION_1 = "Extract 'Text Distinction Code1' at (0,1): ";
+	private final static String LOG_EXTRACTION_2 = "Extract 'Text Distinction Code2' at (1,2): ";
+	private final static String LOG_EXTRACTION_3 = "Extract 'Sample Distinction Code' at (2,3): ";
+	private final static String LOG_EXTRACTION_4 = "Extract 'Instrument ID' at (3,43): ";
+	private final static String LOG_EXTRACTION_5 = "Extract 'Year' at (43,47): ";
+	private final static String LOG_EXTRACTION_6 = "Extract 'Month' at (47,49): ";
+	private final static String LOG_EXTRACTION_7 = "Extract 'Day' at (49,51): ";
+	private final static String LOG_EXTRACTION_8 = "Extract 'Analysis Status' at (51,52): ";
+	private final static String LOG_EXTRACTION_9 = "Extract 'Sample ID' at (52,67): ";
+	private final static String LOG_EXTRACTION_10 = "Extract 'Particle Size' at (67,73): ";
+	private final static String LOG_EXTRACTION_11 = "Extract 'Reserve Bit' at (73,74): ";
+	private final static String LOG_EXTRACTION_12 = "Extract 'WBC' at (74,79): ";
+	private final static String LOG_EXTRACTION_13 = "Extract 'RBC' at (79,84): ";
+	private final static String LOG_EXTRACTION_14 = "Extract 'HGB' at (84,89): ";
+	private final static String LOG_EXTRACTION_15 = "Extract 'HCT' at (89,94): ";
+	private final static String LOG_EXTRACTION_16 = "Extract 'MCV' at (94,99): ";
+	private final static String LOG_EXTRACTION_17 = "Extract 'MCH' at (99,104): ";
+	private final static String LOG_EXTRACTION_18 = "Extract 'MCHC' at (104,109): ";
+	private final static String LOG_EXTRACTION_19 = "Extract 'PLT' at (109,114): ";
+	private final static String LOG_EXTRACTION_20 = "Extract 'LYM%' at (114,119): ";
+	private final static String LOG_EXTRACTION_21 = "Extract 'MXD%' at (119,119): ";
+	private final static String LOG_EXTRACTION_22 = "Extract 'NEUT%' at (124,129): ";
+	private final static String LOG_EXTRACTION_23 = "Extract 'LYM#' at (129,134): ";
+	private final static String LOG_EXTRACTION_24 = "Extract 'MXD#' at (134,139): ";
+	private final static String LOG_EXTRACTION_25 = "Extract 'NEUT#' at (139,144): ";
+	private final static String LOG_EXTRACTION_26 = "Extract 'RDW-SD' at (144,149): ";
+	private final static String LOG_EXTRACTION_27 = "Extract 'RDW-CV' at (149,154): ";
+	private final static String LOG_EXTRACTION_28 = "Extract 'PDW' at (154,159): ";
+	private final static String LOG_EXTRACTION_29 = "Extract 'MPV' at (159,164): ";
+	private final static String LOG_EXTRACTION_30 = "Extract 'P-LCR' at (164,169): ";
+	private final static String LOG_EXTRACTION_31 = "Extract 'PCT' at (169,174): ";
+	
+	private final static String MSG_PART_1 = "STX: ";
+	private final static String MSG_PART_2 = "Text Distinction Code 1: ";
+	private final static String MSG_PART_3 = "Text Distinction Code 2: ";
+	private final static String MSG_PART_4 = "Sample Distinction Code: ";
+	private final static String MSG_PART_5 = "Instrument ID: ";
+	private final static String MSG_PART_6 = "Year: ";
+	private final static String MSG_PART_7 = "Month: ";
+	private final static String MSG_PART_8 = "Day: ";
+	private final static String MSG_PART_9 = "Analysis Status: ";
+	private final static String MSG_PART_10 = "Sample ID: ";
+	private final static String MSG_PART_11 = "Particle Size: ";
+	private final static String MSG_PART_12 = "Reserve: ";
+	private final static String MSG_PART_13 = "WBC: ";
+	private final static String MSG_PART_14 = "RBC: ";
+	private final static String MSG_PART_15 = "HGB: ";
+	private final static String MSG_PART_16 = "HCT: ";
+	private final static String MSG_PART_17 = "MCV: ";
+	private final static String MSG_PART_18 = "MCH: ";
+	private final static String MSG_PART_19 = "MCHC: ";
+	private final static String MSG_PART_20 = "PLT: ";
+	private final static String MSG_PART_21 = "W SCR (LYM%): ";
+	private final static String MSG_PART_22 = "W MCR (MXD%): ";
+	private final static String MSG_PART_23 = "W LCR (NEUT%): ";
+	private final static String MSG_PART_24 = "W SCC (LYM#): ";
+	private final static String MSG_PART_25 = "W MCC (MXD#): ";
+	private final static String MSG_PART_26 = "W LCC (NEUT#): ";
+	private final static String MSG_PART_27 = "RDW_SD: ";
+	private final static String MSG_PART_28 = "RDW_CV ";
+	private final static String MSG_PART_29 = "PDW: ";
+	private final static String MSG_PART_30 = "MPV: ";
+	private final static String MSG_PART_31 = "P_LCR: ";
+	private final static String MSG_PART_32 = "PCT: ";
+	
+	
 
 	private String input;
 
@@ -47,169 +128,169 @@ public class XPMessage {
 	}
 
 	public void build() {
-		logger.info("--");
-		logger.info("Generate XPMessage");
+		logger.info(DASH);
+		logger.info(TITLE);
 		// Text Distinction Code1
 		setTextDistinctionCode1(input.substring(0, 1));
-		logger.info("Extract 'Text Distinction Code1' at (0,1): " + getTextDistinctionCode1());
+		logger.info(LOG_EXTRACTION_1 + getTextDistinctionCode1());
 		// Text Distinction Code2
 		setTextDistinctionCode2(input.substring(1, 2));
-		logger.info("Extract 'Text Distinction Code2' at (1,2): " + getTextDistinctionCode2());
+		logger.info(LOG_EXTRACTION_2 + getTextDistinctionCode2());
 		// Sample Distinction Code
 		setSampleDistinctionCode(input.substring(2, 3));
-		logger.info("Extract 'Sample Distinction Code' at (2,3): " + getSampleDistinctionCode());
+		logger.info(LOG_EXTRACTION_3 + getSampleDistinctionCode());
 		// Instrument ID
 		setInstrumentID(input.substring(3, 43));
-		logger.info("Extract 'Instrument ID' at (3,43): " + getInstrumentID());
+		logger.info(LOG_EXTRACTION_4 + getInstrumentID());
 		// Year
 		setYear(input.substring(43, 47));
-		logger.info("Extract 'Year' at (43,47): " + getYear());
+		logger.info(LOG_EXTRACTION_5 + getYear());
 		// Month
 		setMonth(input.substring(47, 49));
-		logger.info("Extract 'Month' at (47,49): " + getMonth());
+		logger.info(LOG_EXTRACTION_6 + getMonth());
 		// Day
 		setDay(input.substring(49, 51));
-		logger.info("Extract 'Day' at (49,51): " + getDay());
+		logger.info(LOG_EXTRACTION_7 + getDay());
 		// Analysis Status
 		setAnalysisStatus(input.substring(51, 52));
-		logger.info("Extract 'Analysis Status' at (51,52): " + getAnalysisStatus());
+		logger.info(LOG_EXTRACTION_8 + getAnalysisStatus());
 		// Sample ID
 		setSampleID(input.substring(52, 67));
-		logger.info("Extract 'Sample ID' at (52,67): " + getSampleID());
+		logger.info(LOG_EXTRACTION_9 + getSampleID());
 		// Particle Size
 		setParticleSize(input.substring(67, 73));
-		logger.info("Extract 'Particle Size' at (67,73): " + getParticleSize());
+		logger.info(LOG_EXTRACTION_10 + getParticleSize());
 		// Reserve
 		setReserve(input.substring(73, 74));
-		logger.info("Extract 'Reserve Bit' at (73,74): " + getReserve());
+		logger.info(LOG_EXTRACTION_11 + getReserve());
 		// WBC
 		setWbc(input.substring(74, 79));
-		logger.info("Extract 'WBC' at (74,79): " + getWbc());
+		logger.info(LOG_EXTRACTION_12 + getWbc());
 		// RBC
 		setRbc(input.substring(79, 84));
-		logger.info("Extract 'RBC' at (79,84): " + getRbc());
+		logger.info(LOG_EXTRACTION_13 + getRbc());
 		// HGB
 		setHgb(input.substring(84, 89));
-		logger.info("Extract 'HGB' at (84,89): " + getHgb());
+		logger.info(LOG_EXTRACTION_14 + getHgb());
 		// HCT
 		setHct(input.substring(89, 94));
-		logger.info("Extract 'HCT' at (89,94): " + getHct());
+		logger.info(LOG_EXTRACTION_15 + getHct());
 		// MCV
 		setMcv(input.substring(94, 99));
-		logger.info("Extract 'MCV' at (94,99): " + getMcv());
+		logger.info(LOG_EXTRACTION_16 + getMcv());
 		// MCH
 		setMch(input.substring(99, 104));
-		logger.info("Extract 'MCH' at (99,104): " + getMch());
+		logger.info(LOG_EXTRACTION_17 + getMch());
 		// MCHC
 		setMchc(input.substring(104, 109));
-		logger.info("Extract 'MCHC' at (104,109): " + getMchc());
+		logger.info(LOG_EXTRACTION_18 + getMchc());
 		// PLT
 		setPlt(input.substring(109, 114));
-		logger.info("Extract 'PLT' at (109,114): " + getPlt());
+		logger.info(LOG_EXTRACTION_19 + getPlt());
 		// LYM%
 		setW_scr(input.substring(114, 119));
-		logger.info("Extract 'LYM%' at (114,119): " + getW_scr());
+		logger.info(LOG_EXTRACTION_20 + getW_scr());
 		// MXD%
 		setW_mcr(input.substring(119, 124));
-		logger.info("Extract 'MXD%' at (119,119): " + getW_mcr());
+		logger.info(LOG_EXTRACTION_21 + getW_mcr());
 		// NEUT%
 		setW_lcr(input.substring(124, 129));
-		logger.info("Extract 'NEUT%' at (124,129): " + getW_lcr());
+		logger.info(LOG_EXTRACTION_22 + getW_lcr());
 		// LYM#
 		setW_scc(input.substring(129, 134));
-		logger.info("Extract 'LYM#' at (129,134): " + getW_scc());
+		logger.info(LOG_EXTRACTION_23 + getW_scc());
 		// MXD#
 		setW_mcc(input.substring(134, 139));
-		logger.info("Extract 'MXD#' at (134,139): " + getW_mcc());
+		logger.info(LOG_EXTRACTION_24 + getW_mcc());
 		// NEUT#
 		setW_lcc(input.substring(139, 144));
-		logger.info("Extract 'NEUT#' at (139,144): " + getW_lcc());
+		logger.info(LOG_EXTRACTION_25 + getW_lcc());
 		// RDW-SD
 		setRdw_sd(input.substring(144, 149));
-		logger.info("Extract 'RDW-SD' at (144,149): " + getRdw_sd());
+		logger.info(LOG_EXTRACTION_26 + getRdw_sd());
 		// RDW-CV
 		setRdw_cv(input.substring(149, 154));
-		logger.info("Extract 'RDW-CV' at (149,154): " + getRdw_cv());
+		logger.info(LOG_EXTRACTION_27 + getRdw_cv());
 		// PDW
 		setPdw(input.substring(154, 159));
-		logger.info("Extract 'PDW' at (154,159): " + getPdw());
+		logger.info(LOG_EXTRACTION_28 + getPdw());
 		// MPV
 		setMpv(input.substring(159, 164));
-		logger.info("Extract 'MPV' at (159,164): " + getMpv());
+		logger.info(LOG_EXTRACTION_29 + getMpv());
 		// P-LCR
 		setP_lcr(input.substring(164, 169));
-		logger.info("Extract 'P-LCR' at (164,169): " + getP_lcr());
+		logger.info(LOG_EXTRACTION_30 + getP_lcr());
 		// PCT
 		setPct(input.substring(169, 174));
-		logger.info("Extract 'PCT' at (169,174): " + getPct());
+		logger.info(LOG_EXTRACTION_31 + getPct());
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder messageProperties = new StringBuilder();
-		messageProperties.append("STX: " + getStx());
+		messageProperties.append(MSG_PART_1 + getStx());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("Text Distinction Code 1: " + getTextDistinctionCode1());
+		messageProperties.append(MSG_PART_2 + getTextDistinctionCode1());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("Text Distinction Code 2: " + getTextDistinctionCode2());
+		messageProperties.append(MSG_PART_3 + getTextDistinctionCode2());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("Sample Distinction Code: " + getSampleDistinctionCode());
+		messageProperties.append(MSG_PART_4 + getSampleDistinctionCode());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("Instrument ID: " + getInstrumentID());
+		messageProperties.append(MSG_PART_5 + getInstrumentID());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("Year: " + getYear());
+		messageProperties.append(MSG_PART_6 + getYear());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("Month: " + getMonth());
+		messageProperties.append(MSG_PART_7 + getMonth());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("Day: " + getDay());
+		messageProperties.append(MSG_PART_8 + getDay());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("Analysis Status: " + getAnalysisStatus());
+		messageProperties.append(MSG_PART_9 + getAnalysisStatus());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("Sample ID: " + getSampleID());
+		messageProperties.append(MSG_PART_10 + getSampleID());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("Particle Size: " + getParticleSize());
+		messageProperties.append(MSG_PART_11 + getParticleSize());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("Reserve: " + getReserve());
+		messageProperties.append(MSG_PART_12 + getReserve());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("WBC: " + getWbc());
+		messageProperties.append(MSG_PART_13 + getWbc());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("RBC: " + getRbc());
+		messageProperties.append(MSG_PART_14 + getRbc());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("HGB: " + getHgb());
+		messageProperties.append(MSG_PART_15 + getHgb());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("HCT: " + getHct());
+		messageProperties.append(MSG_PART_16 + getHct());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("MCV: " + getMcv());
+		messageProperties.append(MSG_PART_17 + getMcv());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("MCH: " + getMch());
+		messageProperties.append(MSG_PART_18 + getMch());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("MCHC: " + getMchc());
+		messageProperties.append(MSG_PART_19 + getMchc());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("PLT: " + getPlt());
+		messageProperties.append(MSG_PART_20 + getPlt());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("W SCR (LYM%): " + getW_scr());
+		messageProperties.append(MSG_PART_21 + getW_scr());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("W MCR (MXD%): " + getW_mcr());
+		messageProperties.append(MSG_PART_22 + getW_mcr());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("W LCR (NEUT%): " + getW_lcr());
+		messageProperties.append(MSG_PART_23 + getW_lcr());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("W SCC (LYM#): " + getW_scc());
+		messageProperties.append(MSG_PART_24 + getW_scc());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("W MCC (MXD#): " + getW_mcc());
+		messageProperties.append(MSG_PART_25 + getW_mcc());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("W LCC (NEUT#): " + getW_lcc());
+		messageProperties.append(MSG_PART_26 + getW_lcc());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("RDW_SD: " + getRdw_sd());
+		messageProperties.append(MSG_PART_27 + getRdw_sd());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("RDW_CV " + getRdw_cv());
+		messageProperties.append(MSG_PART_28 + getRdw_cv());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("PDW: " + getPdw());
+		messageProperties.append(MSG_PART_29 + getPdw());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("MPV: " + getMpv());
+		messageProperties.append(MSG_PART_30 + getMpv());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("P_LCR: " + getP_lcr());
+		messageProperties.append(MSG_PART_31 + getP_lcr());
 		messageProperties.append(System.lineSeparator());
-		messageProperties.append("PCT: " + getPct());
+		messageProperties.append(MSG_PART_32 + getPct());
 
 		return messageProperties.toString();
 	}
@@ -311,7 +392,8 @@ public class XPMessage {
 	}
 
 	public String getWbc() {
-		Float as_long = new Float(wbc);
+		// Float as_long = new Float(wbc);
+		Float as_long = Float.parseFloat(wbc);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -321,7 +403,7 @@ public class XPMessage {
 	}
 
 	public String getRbc() {
-		Float as_long = new Float(rbc);
+		Float as_long = Float.parseFloat(rbc);
 		Float trimmed = as_long / 1000;
 		return trimmed.toString();
 	}
@@ -331,7 +413,7 @@ public class XPMessage {
 	}
 
 	public String getHgb() {
-		Float as_long = new Float(hgb);
+		Float as_long = Float.parseFloat(hgb);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -341,7 +423,7 @@ public class XPMessage {
 	}
 
 	public String getHct() {
-		Float as_long = new Float(hct);
+		Float as_long = Float.parseFloat(hct);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -351,7 +433,7 @@ public class XPMessage {
 	}
 
 	public String getMcv() {
-		Float as_long = new Float(mcv);
+		Float as_long = Float.parseFloat(mcv);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -361,7 +443,7 @@ public class XPMessage {
 	}
 
 	public String getMch() {
-		Float as_long = new Float(mch);
+		Float as_long = Float.parseFloat(mch);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -371,7 +453,7 @@ public class XPMessage {
 	}
 
 	public String getMchc() {
-		Float as_long = new Float(mchc);
+		Float as_long = Float.parseFloat(mchc);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -381,7 +463,7 @@ public class XPMessage {
 	}
 
 	public String getPlt() {
-		Float as_long = new Float(plt);
+		Float as_long = Float.parseFloat(plt);
 		Float trimmed = as_long / 10;
 		return trimmed.toString();
 	}
@@ -391,7 +473,7 @@ public class XPMessage {
 	}
 
 	public String getW_scr() {
-		Float as_long = new Float(w_scr);
+		Float as_long = Float.parseFloat(w_scr);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -401,7 +483,7 @@ public class XPMessage {
 	}
 
 	public String getW_mcr() {
-		Float as_long = new Float(w_mcr);
+		Float as_long = Float.parseFloat(w_mcr);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -411,7 +493,7 @@ public class XPMessage {
 	}
 
 	public String getW_lcr() {
-		Float as_long = new Float(w_lcr);
+		Float as_long = Float.parseFloat(w_lcr);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -421,7 +503,7 @@ public class XPMessage {
 	}
 
 	public String getW_scc() {
-		Float as_long = new Float(w_scc);
+		Float as_long = Float.parseFloat(w_scc);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -431,7 +513,7 @@ public class XPMessage {
 	}
 
 	public String getW_mcc() {
-		Float as_long = new Float(w_mcc);
+		Float as_long = Float.parseFloat(w_mcc);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -441,7 +523,7 @@ public class XPMessage {
 	}
 
 	public String getW_lcc() {
-		Float as_long = new Float(w_lcc);
+		Float as_long = Float.parseFloat(w_lcc);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -451,7 +533,7 @@ public class XPMessage {
 	}
 
 	public String getRdw_sd() {
-		Float as_long = new Float(rdw_sd);
+		Float as_long = Float.parseFloat(rdw_sd);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -461,7 +543,7 @@ public class XPMessage {
 	}
 
 	public String getRdw_cv() {
-		Float as_long = new Float(rdw_cv);
+		Float as_long = Float.parseFloat(rdw_cv);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -471,7 +553,7 @@ public class XPMessage {
 	}
 
 	public String getPdw() {
-		Float as_long = new Float(pdw);
+		Float as_long = Float.parseFloat(pdw);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -481,7 +563,7 @@ public class XPMessage {
 	}
 
 	public String getMpv() {
-		Float as_long = new Float(mpv);
+		Float as_long = Float.parseFloat(mpv);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -491,7 +573,7 @@ public class XPMessage {
 	}
 
 	public String getP_lcr() {
-		Float as_long = new Float(p_lcr);
+		Float as_long = Float.parseFloat(p_lcr);
 		Float trimmed = as_long / 100;
 		return trimmed.toString();
 	}
@@ -501,7 +583,7 @@ public class XPMessage {
 	}
 
 	public String getPct() {
-		Float as_long = new Float(pct);
+		Float as_long = Float.parseFloat(pct);
 		Float trimmed = as_long / 1000;
 		return trimmed.toString();
 	}
@@ -526,4 +608,3 @@ public class XPMessage {
 		this.sampleID = sampleID;
 	}
 }
-
