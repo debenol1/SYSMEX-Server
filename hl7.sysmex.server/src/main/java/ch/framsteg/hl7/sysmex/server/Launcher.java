@@ -19,6 +19,7 @@ import ch.framsteg.hl7.sysmex.server.properties.PropertiesLoader;
 import ch.framsteg.hl7.sysmex.server.properties.PropertiesValidator;
 import ch.framsteg.hl7.sysmex.server.server.CommonSocketServer;
 
+/* Launcher class which reads the application.properties and starts the CommonSocketServer */
 public class Launcher {
 
 	private final static String ERR_PROPERTIES_INVALID = "Properties invalid";
@@ -28,10 +29,12 @@ public class Launcher {
 		try {
 			if (args.length > 0) {
 				Loader<Properties> loader = new PropertiesLoader();
+				// Tries to load the application.properties
 				Properties properties = loader.load(args[0]);
-
 				Validator<Properties> validator = new PropertiesValidator();
+				// The necessary properties are being tested
 				if (validator.validate(properties)) {
+					// The commonSocketServer is being created/started
 					CommonSocketServer commonSocketServer = new CommonSocketServer(
 							Integer.parseInt(properties.getProperty("port")), properties);
 					commonSocketServer.run();

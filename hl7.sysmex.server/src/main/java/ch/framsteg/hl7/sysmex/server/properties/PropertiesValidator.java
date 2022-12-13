@@ -17,6 +17,7 @@ import java.util.Properties;
 
 import ch.framsteg.hl7.sysmex.server.interfaces.Validator;
 
+/* Tests the properties in the application.properties */
 public class PropertiesValidator implements Validator<Properties> {
 
 	private final static String PORT = "port";
@@ -30,8 +31,11 @@ public class PropertiesValidator implements Validator<Properties> {
 		boolean validOutput = false;
 		
 		int port = Integer.parseInt(properties.getProperty(PORT));
+		// Tests the TCP/IP port
 		validPort = (port > 100 && port < 65535) ? true : false;
+		// Tests the path to the output directory
 		validOutput = validate(properties.getProperty(OUTPUt_DIR));
+		// Tests the path to the log directory
 		validLogDir = validate(properties.getProperty(LOG_DIR));
 		return validPort && validOutput && validLogDir;
 	}

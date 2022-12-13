@@ -13,6 +13,7 @@ package ch.framsteg.hl7.sysmex.server.messages;
 
 import org.apache.log4j.Logger;
 
+/* Representing the original XPMessage */
 public class XPMessage {
 
 	private final static String DASH = "--";

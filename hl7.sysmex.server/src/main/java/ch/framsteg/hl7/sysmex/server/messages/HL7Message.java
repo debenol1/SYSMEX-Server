@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+/* Representing the HL7 message */
 public class HL7Message {
 
 	private final static String DATE_FORMAT = "yyyyMMddHHmmss";
@@ -340,6 +341,7 @@ public class HL7Message {
 		return message.toString();
 	}
 
+	/* Identifying the patient's name and firstname */
 	public void identify(String id) {
 
 		String url = properties.getProperty(JDBC_URL);

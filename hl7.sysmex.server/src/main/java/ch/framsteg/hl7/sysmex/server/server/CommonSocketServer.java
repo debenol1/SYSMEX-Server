@@ -153,7 +153,6 @@ class ConnectionHandler implements Runnable {
 			logger.info(RAW_MSG + textBuilder.toString());
 			toAnalyzer.writeUTF(generateACK());
 			logger.info(SLEEP_3);
-			// Thread.sleep(10000);
 			logger.info(WAKE_UP);
 			logger.info(NEW_SECTION);
 			logger.info(BUILD_XPM);
