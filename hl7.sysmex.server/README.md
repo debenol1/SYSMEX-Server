@@ -1,5 +1,4 @@
 # README
-
 SYSMEX service (SYS) acts as an intermediate socket server between a SYSMEX XP300 host (SYH) and a running Elexis environment. The SYH sends the result of a measurement to the SYS which resolves the numeric patient ID and stores the HL7 message as a HL7 file to an output directory which is scanned by Elexis. The HL7 file is imported and assigned automatically by Elexis.
 
 > **_NOTE:_**  If the SYH executes an analysis which should not be imported into Elexis, an alphanumeric patient ID is to be entered in the SYH, The SYS would then ignore the resulting HL7 message. It would only store it to the **UNRESOLVABLE_DIRECTORY**.
